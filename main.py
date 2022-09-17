@@ -1,6 +1,7 @@
 from manager import PasswordManager
 from getpass import getpass
 from colorama import Fore
+from tabulate import tabulate
 import os
 
 instance = PasswordManager()
@@ -14,19 +15,14 @@ def add_password() -> None:
 
 
 def show_all_passwords() -> None:
-    print('Password-for\t\tPassword')
-    for object in instance.get_all_passwords():
-        password_for: str = object.get('password_for')
-        password: str = object.get('password')
-        print(f'{password_for}\t\t\t{password}')
+    data: list[dict] = instance.get_all_passwords()
+    print(tabulate(tabular_data=data, headers={'Password-For': 'Password-For', 'Password': 'Password'}))
 
 
 def show_single_password() -> None:
     password_for: str = input('Show password for: ')
-    get_pass: str = instance.get_password(password_for=password_for)
-    password: str = get_pass.get('password')
-    print('Password-for\t\tPassword')
-    print(f'{password_for}\t\t\t{password}')
+    data: dict = instance.get_password(password_for=password_for)
+    print(tabulate(tabular_data=[data], headers={'Password-For': 'Password-For', 'Password': 'Password'}))
 
 
 def update_password() -> None:
@@ -57,9 +53,9 @@ if __name__ == '__main__':
             root_pass: str = getpass(Fore.BLUE +
                                      'Enter your root password to perform the above actions: ')
             instance.verify_root_password(root_pass)
-        instance.show_options()
-        option: int = int(input(Fore.CYAN + 'Choose an option between 1-6: '))
-        clear_screen()
+            instance.show_options()
+        option: int = int(input(Fore.CYAN + 'Choose an option between 1-7 (6 for help): '))
+        clear_screen()   
         if option == 1:
             add_password()
         elif option == 2:
@@ -71,6 +67,8 @@ if __name__ == '__main__':
         elif option == 5:
             delete_password()
         elif option == 6:
+            instance.show_options()
+        elif option == 7:
             print(Fore.CYAN + 'Bye')
             break
         else:

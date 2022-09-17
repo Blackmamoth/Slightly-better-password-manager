@@ -43,7 +43,8 @@ class PasswordManager:
         print(Fore.GREEN + '3. Show a single password')
         print(Fore.GREEN + '4. Update a password')
         print(Fore.GREEN + '5. Delete a password')
-        print(Fore.GREEN + '6. EXIT')
+        print(Fore.GREEN + '6. Help')
+        print(Fore.GREEN + '7. EXIT')
 
     def __hash_password(self, password: str) -> str:
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
